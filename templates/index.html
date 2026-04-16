@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>1 mm al giorno</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:"Cormorant Garamond",serif;
+color:white;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+background:black;
+text-align:center;
+}
+
+/* sfondo */
+
+.sfondo{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-size:cover;
+background-position:center;
+transition:opacity 3s ease;
+animation:respiroSfondo 25s ease-in-out infinite;
+z-index:-5;
+}
+
+#sfondo1{opacity:1;}
+#sfondo2{opacity:0;}
+
+@keyframes respiroSfondo{
+
+0%{transform:scale(1) translateY(0)}
+50%{transform:scale(1.06) translateY(-10px)}
+100%{transform:scale(1) translateY(0)}
+
+}
+
+/* overlay */
+
+#overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.35);
+z-index:-4;
+}
+
+/* lucine */
+
+#luci{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:-3;
+}
+
+.luce{
+position:absolute;
+border-radius:50%;
+background:radial-gradient(circle,white 0%,rgba(255,255,255,.6) 40%,transparent 70%);
+animation:luceMove linear infinite;
+}
+
+@keyframes luceMove{
+
+0%{transform:translate(0,0);opacity:0}
+20%{opacity:.8}
+80%{opacity:.8}
+100%{transform:translate(-30px,-110vh);opacity:0}
+
+}
+
+/* titolo */
+
+#titolo{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:30px;
+animation:respiroTitolo 10s ease-in-out infinite;
+}
+
+#titolo-alto{
+font-size:46px;
+letter-spacing:4px;
+text-shadow:0 0 20px rgba(255,255,255,.2);
+}
+
+#titolo-basso{
+font-size:20px;
+letter-spacing:6px;
+margin-top:6px;
+color:#e5e5e5;
+}
+
+#sentiero{
+width:110px;
+height:2px;
+background:white;
+margin-top:8px;
+opacity:.8;
+}
+
+@keyframes respiroTitolo{
+
+0%{transform:scale(1)}
+50%{transform:scale(1.03)}
+100%{transform:scale(1)}
+
+}
+
+/* frase */
+
+#frase{
+
+margin-top:20px;
+font-size:36px;
+max-width:720px;
+line-height:1.5;
+padding:0 25px;
+
+opacity:0;
+transform:translateY(30px) scale(.98);
+filter:blur(8px);
+
+transition:
+opacity 2.5s ease,
+transform 2.5s ease,
+filter 2.5s ease;
+
+text-shadow:0 0 14px rgba(0,0,0,.9);
+
+}
+
+/* progresso */
+
+#progressoContainer{
+
+position:fixed;
+bottom:40px;
+width:240px;
+height:4px;
+
+background:rgba(255,255,255,.2);
+border-radius:4px;
+overflow:hidden;
+
+}
+
+#progressoBar{
+
+height:100%;
+width:0%;
+
+background:white;
+transition:width 1s ease;
+
+}
+
+#mmtesto{
+
+position:fixed;
+bottom:55px;
+font-size:16px;
+letter-spacing:2px;
+color:#ddd;
+
+}
+
+/* bottone */
+
+button{
+background:none;
+border:none;
+color:white;
+display:flex;
+flex-direction:column;
+align-items:center;
+cursor:pointer;
+margin-top:30px;
+position:relative;
+}
+
+/* cerchio respiro */
+
+#respiro{
+
+width:90px;
+height:90px;
+
+border-radius:50%;
+
+border:2px solid rgba(255,255,255,.9);
+
+box-shadow:
+0 0 15px rgba(255,255,255,.4),
+0 0 40px rgba(255,255,255,.25),
+inset 0 0 20px rgba(255,255,255,.2);
+
+transition:
+transform 4s ease-in-out,
+box-shadow 4s ease-in-out,
+filter 4s ease-in-out;
+
+}
+
+#respira-testo{
+
+margin-top:14px;
+font-size:22px;
+letter-spacing:3px;
+
+}
+
+/* ripple */
+
+.ripple{
+
+position:absolute;
+border:2px solid rgba(255,255,255,.5);
+border-radius:50%;
+
+width:80px;
+height:80px;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+animation:rippleAnim 4s ease-out forwards;
+
+}
+
+@keyframes rippleAnim{
+
+0%{
+transform:translate(-50%,-50%) scale(1);
+opacity:.8;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(5);
+opacity:0;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="sfondo1" class="sfondo"></div>
+<div id="sfondo2" class="sfondo"></div>
+
+<div id="overlay"></div>
+
+<div id="luci"></div>
+
+<div id="titolo">
+
+<div id="titolo-alto">1 mm</div>
+<div id="sentiero"></div>
+<div id="titolo-basso">al giorno</div>
+
+</div>
+
+<div id="frase"></div>
+
+<button onclick="gestisciClick()" id="btn">
+
+<div id="respiro"></div>
+<div id="respira-testo">Respira</div>
+
+</button>
+
+<div id="mmtesto">0 mm oggi</div>
+
+<div id="progressoContainer">
+<div id="progressoBar"></div>
+</div>
+
+<script>
+
+/* AUDIO RESPIRO */
+
+const suonoInspira = new Audio("/static/audio/inspira.mp3")
+const suonoEspira = new Audio("/static/audio/espira.mp3")
+
+suonoInspira.volume = 0.6
+suonoEspira.volume = 0.1
+
+
+/* stato */
+
+let countdownAttivo = false
+
+
+/* memoria giorno */
+
+const oggi = new Date().toDateString()
+const giornoSalvato = localStorage.getItem("giorno")
+
+if (giornoSalvato !== oggi){
+
+localStorage.setItem("giorno", oggi)
+localStorage.setItem("mmOggi", 0)
+
+}
+
+let mmOggi = parseInt(localStorage.getItem("mmOggi")) || 0
+
+document.getElementById("mmtesto").innerText = mmOggi + " mm oggi"
+
+
+/* sfondi */
+
+const sfondi = [
+
+"https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+"https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+"https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+"https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
+"https://images.unsplash.com/photo-1433086966358-54859d0ed716",
+"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+"https://images.unsplash.com/photo-1472214103451-9374bd1c798e",
+"https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+"https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+
+]
+
+let sfondoAttivo = 1
+
+
+function cambiaSfondo(){
+
+const img = sfondi[Math.floor(Math.random()*sfondi.length)]
+
+const next = sfondoAttivo === 1 ? 2 : 1
+
+const corrente = document.getElementById("sfondo"+sfondoAttivo)
+const nuovo = document.getElementById("sfondo"+next)
+
+nuovo.style.backgroundImage = `url(${img})`
+nuovo.style.opacity = 1
+corrente.style.opacity = 0
+
+sfondoAttivo = next
+
+}
+
+
+/* LUCI */
+
+function creaLuci(){
+
+const c = document.getElementById("luci")
+
+for(let i=0;i<60;i++){
+
+const l = document.createElement("div")
+
+l.className = "luce"
+
+const size = Math.random()*4+2
+
+l.style.width = size+"px"
+l.style.height = size+"px"
+
+l.style.left = Math.random()*100+"%"
+l.style.bottom = "-10px"
+
+l.style.animationDuration = 20+Math.random()*40+"s"
+
+c.appendChild(l)
+
+}
+
+}
+
+creaLuci()
+
+
+/* ripple */
+
+function ripple(){
+
+const btn = document.getElementById("btn")
+
+for(let i=0;i<3;i++){
+
+setTimeout(()=>{
+
+const r = document.createElement("div")
+
+r.className="ripple"
+
+btn.appendChild(r)
+
+setTimeout(()=>{r.remove()},4000)
+
+},i*900)
+
+}
+
+}
+
+
+/* animazione respiro */
+
+function animaInspiro(){
+
+const c = document.getElementById("respiro")
+
+c.style.transform="scale(1.28)"
+
+c.style.boxShadow="0 0 45px rgba(255,255,255,.8),0 0 120px rgba(255,255,255,.35),inset 0 0 35px rgba(255,255,255,.35)"
+
+c.style.filter="brightness(1.2)"
+
+suonoInspira.currentTime=0
+suonoInspira.play()
+
+}
+
+function animaEspiro(){
+
+const c = document.getElementById("respiro")
+
+c.style.transform="scale(.88)"
+
+c.style.boxShadow="0 0 15px rgba(255,255,255,.4),0 0 40px rgba(255,255,255,.25),inset 0 0 20px rgba(255,255,255,.2)"
+
+c.style.filter="brightness(1)"
+
+suonoEspira.currentTime=0
+suonoEspira.play()
+
+}
+
+
+/* progresso */
+
+function aggiornaProgresso(){
+
+mmOggi++
+
+localStorage.setItem("mmOggi", mmOggi)
+
+document.getElementById("mmtesto").innerText = mmOggi + " mm oggi"
+
+const percent = Math.min(mmOggi,100)
+
+document.getElementById("progressoBar").style.width = percent + "%"
+
+}
+
+
+/* frase */
+
+async function prendiFrase(){
+
+const res = await fetch("/frase")
+const data = await res.json()
+
+mostraFrase(data.frase)
+
+}
+
+
+function mostraFrase(testo){
+
+const frase = document.getElementById("frase")
+
+frase.style.opacity=0
+frase.style.transform="translateY(30px)"
+frase.style.filter="blur(8px)"
+
+setTimeout(()=>{
+
+frase.innerText=testo
+
+frase.style.opacity=1
+frase.style.transform="translateY(0)"
+frase.style.filter="blur(0)"
+
+},900)
+
+}
+
+
+/* countdown */
+
+function conto(tipo,secondi,callback){
+
+let i = secondi
+
+document.getElementById("respira-testo").innerText = tipo+" "+i
+
+const timer = setInterval(()=>{
+
+i--
+
+if(i>0){
+
+document.getElementById("respira-testo").innerText = tipo+" "+i
+
+}else{
+
+clearInterval(timer)
+callback()
+
+}
+
+},1000)
+
+}
+
+
+/* click */
+
+function gestisciClick(){
+
+if(countdownAttivo) return
+
+countdownAttivo = true
+
+ripple()
+
+animaInspiro()
+
+conto("Inspira",4,()=>{
+
+animaEspiro()
+
+conto("Espira",4,async ()=>{
+
+cambiaSfondo()
+
+aggiornaProgresso()
+
+setTimeout(async ()=>{
+
+await prendiFrase()
+
+},1200)
+
+document.getElementById("respira-testo").innerText="Respira"
+
+countdownAttivo=false
+
+})
+
+})
+
+}
+
+
+/* frase iniziale */
+
+setTimeout(async ()=>{
+
+await prendiFrase()
+
+},1500)
+
+cambiaSfondo()
+
+</script>
+
+</body>
+</html>
